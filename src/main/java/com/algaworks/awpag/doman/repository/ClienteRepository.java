@@ -9,8 +9,9 @@ import java.util.List;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente,Long> {
 
-   // List<Cliente> findByNome(String nome);pesquisa extamente o nome igual
+   List<Cliente> findByNome(String nome);//pesquisa extamente o nome igual
 
 
     List<Cliente> findByNomeContaining(String nome);//pesquisa generica
+    boolean findByEmail(String email);
 }

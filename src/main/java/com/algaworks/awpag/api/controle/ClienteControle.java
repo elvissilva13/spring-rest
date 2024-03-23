@@ -1,6 +1,7 @@
 package com.algaworks.awpag.api.controle;
 
 import com.algaworks.awpag.domain.mode.Cliente;
+import com.algaworks.awpag.domain.mode.Service.CadastroClienteService;
 import com.algaworks.awpag.doman.repository.ClienteRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RequestMapping("/clientes")
 public class ClienteControle {
    // @Autowired
+    private  final CadastroClienteService cadastroClienteService;
     private final ClienteRepository clienteRepository;
 
 
@@ -46,7 +48,7 @@ public class ClienteControle {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar(@Valid @RequestBody Cliente cliente){
-        return clienteRepository.save(cliente);
+        return cadastroClienteService.salvar(cliente);
     }
     @PutMapping("/{clienteId}")
     public  ResponseEntity<Cliente> atualizar(@PathVariable long clienteId,@Valid @RequestBody Cliente cliente){
@@ -54,7 +56,7 @@ public class ClienteControle {
             return ResponseEntity.notFound().build();
         }
         cliente.setId(clienteId);
-        cliente=clienteRepository.save(cliente);
+        cliente=cadastroClienteService.salvar(cliente);
         return ResponseEntity.ok(cliente);
     }
 
@@ -63,7 +65,7 @@ public class ClienteControle {
         if (!clienteRepository.existsById(clienteId)){
             return ResponseEntity.notFound().build();
         }
-        clienteRepository.deleteById(clienteId);
+        cadastroClienteService.excluir(clienteId);
         return ResponseEntity.noContent().build();
     }
 }
