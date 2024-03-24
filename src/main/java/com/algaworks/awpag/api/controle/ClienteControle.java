@@ -2,6 +2,7 @@ package com.algaworks.awpag.api.controle;
 
 import com.algaworks.awpag.domain.mode.Cliente;
 import com.algaworks.awpag.domain.mode.Service.CadastroClienteService;
+import com.algaworks.awpag.domain.mode.exception.NegocioException;
 import com.algaworks.awpag.doman.repository.ClienteRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -26,9 +27,9 @@ public class ClienteControle {
 
     @GetMapping
     public List<Cliente> Listar(){
-        // return clienteRepository.findAll(); pesquisa tudo no banco de dados
+         return clienteRepository.findAll();// pesquisa tudo no banco de dados
         //return  clienteRepository.findByNome("elvis");pesquisa exatamente  igual o nome
-        return clienteRepository.findByNomeContaining("k");
+
 
 
     //    return manager.createQuery("from Cliente",Cliente.class).getResultList();
@@ -67,5 +68,9 @@ public class ClienteControle {
         }
         cadastroClienteService.excluir(clienteId);
         return ResponseEntity.noContent().build();
+    }
+@ExceptionHandler(NegocioException.class)
+    public  ResponseEntity<String> capturar(NegocioException e){
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
